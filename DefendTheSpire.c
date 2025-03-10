@@ -21,12 +21,17 @@
 
 #include "raylib.h"
 
+typedef struct Path{
+    Vector2 StartPosition;
+    Vector2 EndPosition;
+}Path;
+
 int main(void)
 {
     const int screenWidth = 900;
     const int screenHeight = 900;
     
-    int AmountOfCreeps = 5;
+    int AmountOfCreeps = 1;
     
     Rectangle Creeps[AmountOfCreeps];
     
@@ -36,6 +41,8 @@ int main(void)
         Creeps[i].width = 20;
         Creeps[i].height = 20;
     }
+    
+    Path path = {50, 300, 500, 300};
 
     InitWindow(screenWidth, screenHeight, "Defend the spire");
 
@@ -47,6 +54,8 @@ int main(void)
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
+            
+            DrawLine(path.StartPosition.x, path.StartPosition.y, path.EndPosition.x, path.EndPosition.y, BLACK);
             
             for(int i = 0; i < AmountOfCreeps; i++){
                 DrawRectangle(Creeps[i].x, Creeps[i].y, Creeps[i].width, Creeps[i].height, RED);
