@@ -28,18 +28,18 @@ int main(void)
     const int screenWidth = 900;
     const int screenHeight = 900;
     
-    Rectangle grid[50][50];
+    int GirdSize = 20;
     
-    for(int i = 0; i < 50; i++){
-        for(int j = 0; j < 50; j++){
-            grid[i][j].x = j * 10;
-            grid[i][j].y = i * 10;
-            grid[i][j].width = 20;
-            grid[i][j].height = 20;
+    Rectangle grid[GirdSize][GirdSize];
+    
+    for(int i = 0; i < GirdSize; i++){
+        for(int j = 0; j < GirdSize; j++){
+            grid[i][j].x = (j * 30);
+            grid[i][j].y = (i * 30);
+            grid[i][j].width = 30;
+            grid[i][j].height = 30;
         }
     }
-    
-    
     
     InitWindow(screenWidth, screenHeight, "Defend the spire");
 
@@ -52,16 +52,17 @@ int main(void)
 
             ClearBackground(RAYWHITE);
             
-            for(int i = 0; i < 50; i++){
-                for(int j = 0; j < 50; j++){
-                    DrawRectangle(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, BLACK);
+            for(int i = 0; i < GirdSize; i++){
+                for(int j = 0; j < GirdSize; j++){
+                    DrawRectangle(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, GRAY);
+                    DrawRectangleLines(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, WHITE);
                 }
             }
 
         EndDrawing();
     }
-
+    
    CloseWindow();
-
+   
     return 0;
 }
