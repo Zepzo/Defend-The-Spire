@@ -33,16 +33,16 @@ int main(void)
     
     int AmountOfCreeps = 1;
     
+    Path path = {50, 300, 500, 300};
+    
     Rectangle Creeps[AmountOfCreeps];
     
     for(int i = 0; i < AmountOfCreeps; i++){
-        Creeps[i].x = 50;
-        Creeps[i].y = 50;
+        Creeps[i].x = path.StartPosition.x;
+        Creeps[i].y = path.StartPosition.y - 10;
         Creeps[i].width = 20;
         Creeps[i].height = 20;
     }
-    
-    Path path = {50, 300, 500, 300};
 
     InitWindow(screenWidth, screenHeight, "Defend the spire");
 
@@ -50,6 +50,9 @@ int main(void)
     
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+        if(Creeps[0].x < path.EndPosition.x - 10){
+            Creeps[0].x++;
+        }
         
         BeginDrawing();
 
@@ -64,7 +67,7 @@ int main(void)
         EndDrawing();
     }
 
-   CloseWindow();        // Close window and OpenGL context
+   CloseWindow();
 
     return 0;
 }
