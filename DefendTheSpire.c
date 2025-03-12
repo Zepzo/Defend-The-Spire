@@ -1,27 +1,37 @@
 /* Todo list
 
 * set up
-- read the red blob games articels. done
-- make a grid/ tile map. done
+- [X]read the red blob games articels
+- [X]make a grid/ tile map
 
 * pathfinding
-- chouse algorithm(Breadth-first search). done
-- implement it.
+- [X]chouse algorithm(Breadth-first search)
+- [ ]implement it
 
 * creeps
-- creeps can spawn and move in the grid.
-- creeps follow the pathfinding.
-- more than one kind?.
+- [ ]creeps can spawn and move in the grid
+- [ ]creeps follow the pathfinding
+- [ ]more than one kind?
 
 * tiles
-- difrent tiels?.
+- [ ]difrent tiels?
 
 * towers? (idk if i will get to this)
 -fill out later
 
 */
 
+#include <stdbool.h>
 #include "raylib.h"
+
+typedef struct Tile{
+    float x;                
+    float y;                
+    float width;           
+    float height;
+    bool reached;
+    bool IsWall;
+}Tile;
 
 int main(void)
 {
@@ -30,7 +40,7 @@ int main(void)
     
     int GirdSize = 20;
     
-    Rectangle grid[GirdSize][GirdSize];
+    Tile grid[GirdSize][GirdSize];
     
     for(int i = 0; i < GirdSize; i++){
         for(int j = 0; j < GirdSize; j++){
@@ -38,6 +48,8 @@ int main(void)
             grid[i][j].y = (i * 30);
             grid[i][j].width = 30;
             grid[i][j].height = 30;
+            grid[i][j].reached = false;
+            grid[i][j].IsWall = false;
         }
     }
     
@@ -69,13 +81,34 @@ int main(void)
             circel.y = grid[circel_Y][circel_X].y;
         }
         
+        /*if (CheckCollisionPointRec(mouse, (Rectangle){10, 750, 200, 50, RAYWHITE})) {
+            SpaceBoutton = true;
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                SpaceIsPressed = true;
+            }
+        }*/
+        
+        Vector2 mouse = GetMousePosition();
+        for(int i = 0; i < GirdSize; i++){
+            for(int j = 0; j < GirdSize; j++){
+                if(CheckCollisionPointRec(mouse, (Rectangle){grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, RAYWHITE})){
+                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        grid[i][j].IsWall = true;
+                    }
+                }
+                else{
+                    //grid[i][j].IsWall = false;
+                }
+            }
+        }
+        
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
             
             for(int i = 0; i < GirdSize; i++){
                 for(int j = 0; j < GirdSize; j++){
-                    DrawRectangle(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, GRAY);
+                    DrawRectangle(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height,grid[i][j].IsWall ? BROWN : GRAY);
                     DrawRectangleLines(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, WHITE);
                 }
             }
