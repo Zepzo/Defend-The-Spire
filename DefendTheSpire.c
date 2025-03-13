@@ -24,6 +24,8 @@
 #include <stdbool.h>
 #include "raylib.h"
 
+#include "Queue.c"
+
 typedef struct Tile{
     float x;                
     float y;                
@@ -58,12 +60,16 @@ int main(void)
     
     Vector2 circel = { grid[circel_Y][circel_X].x, grid[circel_Y][circel_X].y};
     
+    Queue q;
+    
     InitWindow(screenWidth, screenHeight, "Defend the spire");
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+        initializeQueue(&q);
+        
         if (IsKeyPressed(KEY_D) && circel_X != GirdSize - 1 && grid[circel_Y][circel_X + 1].IsWall != true){
             circel_X++;
             circel.x = grid[circel_Y][circel_X].x;
