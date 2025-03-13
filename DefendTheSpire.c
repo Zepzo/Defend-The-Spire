@@ -64,29 +64,22 @@ int main(void)
     
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        if (IsKeyPressed(KEY_D) && circel_X != GirdSize - 1){
+        if (IsKeyPressed(KEY_D) && circel_X != GirdSize - 1 && grid[circel_Y][circel_X + 1].IsWall != true){
             circel_X++;
             circel.x = grid[circel_Y][circel_X].x;
         }
-        else if (IsKeyPressed(KEY_A) && circel_X != 0){
+        else if (IsKeyPressed(KEY_A) && circel_X != 0 && grid[circel_Y][circel_X - 1].IsWall != true){
             circel_X--;
             circel.x = grid[circel_Y][circel_X].x;
         }
-        else if (IsKeyPressed(KEY_W) && circel_Y != 0){
+        else if (IsKeyPressed(KEY_W) && circel_Y != 0 && grid[circel_Y - 1][circel_X].IsWall != true){
             circel_Y--;
             circel.y = grid[circel_Y][circel_X].y;
         }
-        else if (IsKeyPressed(KEY_S) && circel_Y != GirdSize - 1){
+        else if (IsKeyPressed(KEY_S) && circel_Y != GirdSize - 1 && grid[circel_Y + 1][circel_X].IsWall != true){
             circel_Y++;
             circel.y = grid[circel_Y][circel_X].y;
         }
-        
-        /*if (CheckCollisionPointRec(mouse, (Rectangle){10, 750, 200, 50, RAYWHITE})) {
-            SpaceBoutton = true;
-            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                SpaceIsPressed = true;
-            }
-        }*/
         
         Vector2 mouse = GetMousePosition();
         for(int i = 0; i < GirdSize; i++){
@@ -95,9 +88,9 @@ int main(void)
                     if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         grid[i][j].IsWall = true;
                     }
-                }
-                else{
-                    //grid[i][j].IsWall = false;
+                    else if(IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
+                        grid[i][j].IsWall = false;
+                    }
                 }
             }
         }
@@ -112,7 +105,6 @@ int main(void)
                     DrawRectangleLines(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, WHITE);
                 }
             }
-            
             DrawCircle(circel.x + 15, circel.y + 15, 10, RED);
 
         EndDrawing();
