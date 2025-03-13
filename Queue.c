@@ -1,8 +1,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#define MAX_SIZE 410
+
 typedef struct {
-    int items[410];
+    int items[MAX_SIZE];
     int front;
     int rear;
 } Queue;
@@ -36,13 +38,14 @@ void dequeue(Queue* q)
     q->front++;
 }
 
-void dequeue(Queue* q)
+int peek(Queue* q)
 {
     if (isEmpty(q)) {
         printf("Queue is empty\n");
-        return;
+        return -1; // return some default value or handle
+                   // error differently
     }
-    q->front++;
+    return q->items[q->front + 1];
 }
 
 void printQueue(Queue* q)
