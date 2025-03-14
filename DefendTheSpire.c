@@ -9,15 +9,16 @@
 - [ ]implement it
 
 * creeps
-- [ ]creeps can spawn and move in the grid
+- [X]creeps can spawn and move in the grid
 - [ ]creeps follow the pathfinding
 - [ ]more than one kind?
 
 * tiles
-- [ ]difrent tiels?
+- [X]wall tiels
+- [ ]Spire/goal tile
 
 * towers? (idk if i will get to this)
--fill out later
+- fill out later
 
 */
 
@@ -25,15 +26,6 @@
 #include "raylib.h"
 
 #include "Queue.c"
-
-typedef struct Tile{
-    float x;                
-    float y;                
-    float width;           
-    float height;
-    bool reached;
-    bool IsWall;
-}Tile;
 
 int main(void)
 {
@@ -60,16 +52,20 @@ int main(void)
     
     Vector2 circel = { grid[circel_Y][circel_X].x, grid[circel_Y][circel_X].y};
     
-    Queue q;
+    Queue queue;
     
     InitWindow(screenWidth, screenHeight, "Defend the spire");
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     
+    initializeQueue(&queue);
+        
+    enqueue(&queue, grid[18][18]);
+    
+    
+    
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        initializeQueue(&q);
-        
         if (IsKeyPressed(KEY_D) && circel_X != GirdSize - 1 && grid[circel_Y][circel_X + 1].IsWall != true){
             circel_X++;
             circel.x = grid[circel_Y][circel_X].x;
