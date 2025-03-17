@@ -47,10 +47,9 @@ int main(void)
         }
     }
     
-    int circel_X = 1;
-    int circel_Y = 1;
+    GridPos circelPos = {1, 1};
     
-    Vector2 circel = { grid[circel_Y][circel_X].x, grid[circel_Y][circel_X].y};
+    Vector2 circel = { grid[circelPos.y][circelPos.x].x, grid[circelPos.y][circelPos.x].y};
     
     Queue queue;
     
@@ -58,35 +57,58 @@ int main(void)
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     
+    Tile current;
+    
     initializeQueue(&queue);
         
     enqueue(&queue, grid[18][18]);
+    grid[18][18].reached = true;
     
-    
+    //grid[current.pos.y][current.pos.x]
     
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        if (IsKeyPressed(KEY_D) && circel_X != GirdSize - 1 && grid[circel_Y][circel_X + 1].IsWall != true){
-            circel_X++;
-            circel.x = grid[circel_Y][circel_X].x;
+            /*current = peek(&queue);
+            
+            if(!grid[current.pos.y+1][current.pos.x].reached){
+                //enqueue(&queue, grid[current.pos.y+1][current.pos.x]);
+                grid[current.pos.y+1][current.pos.x].reached = true;
+            }
+            else if(!grid[current.pos.y-1][current.pos.x].reached){
+                //enqueue(&queue, grid[current.pos.y-1][current.pos.x]);
+                //grid[current.pos.y-1][current.pos.x].reached = true;
+            }
+            else if(!grid[current.pos.y][current.pos.x+1].reached){
+                //enqueue(&queue, grid[current.pos.y][current.pos.x+1]);
+                //grid[current.pos.y][current.pos.x+1].reached = true;
+            }
+            else if(!grid[current.pos.y][current.pos.x-1].reached){
+                //enqueue(&queue, grid[current.pos.y][current.pos.x-1]);
+                //grid[current.pos.y][current.pos.x-1].reached = true;
+            }
+            //dequeue(&queue);*/
+        
+        if (IsKeyPressed(KEY_D) && circelPos.x != GirdSize - 1 && grid[circelPos.y][circelPos.x + 1].IsWall != true){
+            circelPos.x++;
+            circel.x = grid[circelPos.y][circelPos.x].x;
         }
-        else if (IsKeyPressed(KEY_A) && circel_X != 0 && grid[circel_Y][circel_X - 1].IsWall != true){
-            circel_X--;
-            circel.x = grid[circel_Y][circel_X].x;
+        else if (IsKeyPressed(KEY_A) && circelPos.x != 0 && grid[circelPos.y][circelPos.x - 1].IsWall != true){
+            circelPos.x--;
+            circel.x = grid[circelPos.y][circelPos.x].x;
         }
-        else if (IsKeyPressed(KEY_W) && circel_Y != 0 && grid[circel_Y - 1][circel_X].IsWall != true){
-            circel_Y--;
-            circel.y = grid[circel_Y][circel_X].y;
+        else if (IsKeyPressed(KEY_W) && circelPos.y != 0 && grid[circelPos.y - 1][circelPos.x].IsWall != true){
+            circelPos.y--;
+            circel.y = grid[circelPos.y][circelPos.x].y;
         }
-        else if (IsKeyPressed(KEY_S) && circel_Y != GirdSize - 1 && grid[circel_Y + 1][circel_X].IsWall != true){
-            circel_Y++;
-            circel.y = grid[circel_Y][circel_X].y;
+        else if (IsKeyPressed(KEY_S) && circelPos.y != GirdSize - 1 && grid[circelPos.y + 1][circelPos.x].IsWall != true){
+            circelPos.y++;
+            circel.y = grid[circelPos.y][circelPos.x].y;
         }
         
         Vector2 mouse = GetMousePosition();
         for(int i = 0; i < GirdSize; i++){
             for(int j = 0; j < GirdSize; j++){
-                if(CheckCollisionPointRec(mouse, (Rectangle){grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, RAYWHITE})){
+                if(CheckCollisionPointRec(mouse, (Rectangle){grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height})){
                     if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         grid[i][j].IsWall = true;
                     }
@@ -104,7 +126,7 @@ int main(void)
             for(int i = 0; i < GirdSize; i++){
                 for(int j = 0; j < GirdSize; j++){
                     DrawRectangle(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height,grid[i][j].IsWall ? BROWN : GRAY);
-                    DrawRectangleLines(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, WHITE);
+                    DrawRectangleLines(grid[i][j].x, grid[i][j].y, grid[i][j].width, grid[i][j].height, grid[i][j].reached ? BLACK : WHITE);
                 }
             }
             DrawCircle(circel.x + 15, circel.y + 15, 10, RED);

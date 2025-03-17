@@ -3,9 +3,14 @@
 
 #define MAX_SIZE 410
 
+typedef struct GridPos{
+    int x;
+    int y;
+}GridPos;
+
 typedef struct Tile{
-    float x;                
-    float y;                
+    int x;
+    int y;
     float width;           
     float height;
     bool reached;
@@ -47,7 +52,7 @@ void dequeue(Queue* q)
     q->front++;
 }
 
-Tile peek(Queue* q)
+Tile peek(Queue* q, Tile t)
 {
     if (isEmpty(q)) {
         printf("Queue is empty\n");
