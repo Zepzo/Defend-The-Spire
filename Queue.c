@@ -33,13 +33,14 @@ bool isEmpty(Queue* q) { return (q->front == q->rear - 1); }
 
 bool isFull(Queue* q) { return (q->rear == MAX_SIZE); }
 
-void enqueue(Queue* q, Tile value)
+void enqueue(Queue* q, int x, int y)
 {
     if (isFull(q)) {
         printf("Queue is full\n");
         return;
     }
-    q->items[q->rear] = value;
+    q->items[q->rear].x = x;
+    q->items[q->rear].y = y;
     q->rear++;
 }
 
@@ -52,12 +53,22 @@ void dequeue(Queue* q)
     q->front++;
 }
 
-Tile peek(Queue* q, Tile t)
+int peek_x(Queue* q)
 {
     if (isEmpty(q)) {
         printf("Queue is empty\n");
-        return q->items[0]; // return some default value or handle
+        return 0; // return some default value or handle
                    // error differently
     }
-    return q->items[q->front + 1];
+    return q->items[q->front + 1].x;
+}
+
+int peek_y(Queue* q)
+{
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return 0; // return some default value or handle
+                   // error differently
+    }
+    return q->items[q->front + 1].y;
 }
