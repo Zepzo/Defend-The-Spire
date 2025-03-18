@@ -53,22 +53,13 @@ void dequeue(Queue* q)
     q->front++;
 }
 
-int peek_x(Queue* q)
+void peek(Queue* q, GridPos* g)
 {
     if (isEmpty(q)) {
         printf("Queue is empty\n");
-        return 0; // return some default value or handle
+         // return some default value or handle
                    // error differently
     }
-    return q->items[q->front + 1].x;
-}
-
-int peek_y(Queue* q)
-{
-    if (isEmpty(q)) {
-        printf("Queue is empty\n");
-        return 0; // return some default value or handle
-                   // error differently
-    }
-    return q->items[q->front + 1].y;
+    g->x = q->items[q->front + 1].x;
+    g->y = q->items[q->front + 1].y;
 }

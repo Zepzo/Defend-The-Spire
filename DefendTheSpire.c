@@ -48,7 +48,7 @@ int main(void)
     }
     
     GridPos circelPos = {1, 1};
-    GridPos bfsPos = {18, 18};
+    GridPos bfsPos = {10, 10};
     
     Vector2 circel = { grid[circelPos.y][circelPos.x].x, grid[circelPos.y][circelPos.x].y};
     
@@ -67,29 +67,34 @@ int main(void)
     
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        if(!grid[bfsPos.y+1][bfsPos.x].reached){
-            enqueue(&queue, grid[bfsPos.y+1][bfsPos.x].x, grid[bfsPos.y+1][bfsPos.x].y);
-            grid[bfsPos.y+1][bfsPos.x].reached = true;
+        if(IsKeyPressed(KEY_SPACE)){
+            if(bfsPos.x <= 19 && bfsPos.x >= 0 && bfsPos.y <= 19 && bfsPos.y >= 0){
+                
+                if(grid[bfsPos.y+1][bfsPos.x].reached == false && (bfsPos.y+1) != 20){
+                    enqueue(&queue, grid[bfsPos.y+1][bfsPos.x].x, grid[bfsPos.y+1][bfsPos.x].y);
+                    grid[bfsPos.y+1][bfsPos.x].reached = true;
+                }
+        
+                if(grid[bfsPos.y-1][bfsPos.x].reached == false && (bfsPos.y-1) != -1){
+                    enqueue(&queue, grid[bfsPos.y-1][bfsPos.x].x, grid[bfsPos.y-1][bfsPos.x].y);
+                    grid[bfsPos.y-1][bfsPos.x].reached = true;
+                }
+        
+                if(grid[bfsPos.y][bfsPos.x+1].reached == false && (bfsPos.x+1) != 20){
+                    enqueue(&queue, grid[bfsPos.y][bfsPos.x+1].x, grid[bfsPos.y][bfsPos.x+1].y);
+                    grid[bfsPos.y][bfsPos.x+1].reached = true;
+                }
+        
+                if(grid[bfsPos.y][bfsPos.x-1].reached == false && (bfsPos.x-1) != -1){
+                    enqueue(&queue, grid[bfsPos.y][bfsPos.x-1].x, grid[bfsPos.y][bfsPos.x-1].y);
+                    grid[bfsPos.y][bfsPos.x-1].reached = true;
+                }
+            }
+            
+            dequeue(&queue);
+        
+            peek(&queue, &bfsPos);
         }
-        
-        if(!grid[bfsPos.y-1][bfsPos.x].reached){
-            enqueue(&queue, grid[bfsPos.y-1][bfsPos.x].x, grid[bfsPos.y+1][bfsPos.x].y);
-            grid[bfsPos.y-1][bfsPos.x].reached = true;
-        }
-        
-        if(!grid[bfsPos.y][bfsPos.x+1].reached){
-            enqueue(&queue, grid[bfsPos.y][bfsPos.x+1].x, grid[bfsPos.y+1][bfsPos.x].y);
-            grid[bfsPos.y][bfsPos.x+1].reached = true;
-        }
-        
-        if(!grid[bfsPos.y][bfsPos.x-1].reached){
-            enqueue(&queue, grid[bfsPos.y][bfsPos.x-1].x, grid[bfsPos.y+1][bfsPos.x].y);
-            grid[bfsPos.y][bfsPos.x-1].reached = true;
-        }    
-        //dequeue(&queue);
-        
-        //bfsPos.x = peek_x(&queue);
-        //bfsPos.y = peek_y(&queue);
         
         if (IsKeyPressed(KEY_D) && circelPos.x != GirdSize - 1 && grid[circelPos.y][circelPos.x + 1].IsWall != true){
             circelPos.x++;
