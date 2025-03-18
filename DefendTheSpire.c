@@ -62,39 +62,51 @@ int main(void)
         
     enqueue(&queue, grid[bfsPos.y][bfsPos.x].x, grid[bfsPos.y][bfsPos.x].y);
     grid[bfsPos.y][bfsPos.x].reached = true;
+    grid[bfsPos.y][bfsPos.x].direction = 0;
     
     //grid[bfsPos.y][bfsPos.x]
     
+    bool isDone = false;
+    
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        if(IsKeyPressed(KEY_SPACE)){
+        if(!isDone){
             if(bfsPos.x <= 19 && bfsPos.x >= 0 && bfsPos.y <= 19 && bfsPos.y >= 0){
                 
-                if(grid[bfsPos.y+1][bfsPos.x].reached == false && (bfsPos.y+1) != 20){
-                    enqueue(&queue, grid[bfsPos.y+1][bfsPos.x].x, grid[bfsPos.y+1][bfsPos.x].y);
+                if(grid[bfsPos.y+1][bfsPos.x].reached == false){
+                    enqueue(&queue, bfsPos.x, bfsPos.y+1);
+                    //enqueue(&queue, grid[bfsPos.y+1][bfsPos.x].x, grid[bfsPos.y+1][bfsPos.x].y);
                     grid[bfsPos.y+1][bfsPos.x].reached = true;
+                    grid[bfsPos.y+1][bfsPos.x].direction = 2;
                 }
         
-                if(grid[bfsPos.y-1][bfsPos.x].reached == false && (bfsPos.y-1) != -1){
-                    enqueue(&queue, grid[bfsPos.y-1][bfsPos.x].x, grid[bfsPos.y-1][bfsPos.x].y);
+                if(grid[bfsPos.y-1][bfsPos.x].reached == false){
+                    enqueue(&queue, bfsPos.x, bfsPos.y-1);
+                    //enqueue(&queue, grid[bfsPos.y-1][bfsPos.x].x, grid[bfsPos.y-1][bfsPos.x].y);
                     grid[bfsPos.y-1][bfsPos.x].reached = true;
+                    grid[bfsPos.y+1][bfsPos.x].direction = 1;
                 }
         
-                if(grid[bfsPos.y][bfsPos.x+1].reached == false && (bfsPos.x+1) != 20){
-                    enqueue(&queue, grid[bfsPos.y][bfsPos.x+1].x, grid[bfsPos.y][bfsPos.x+1].y);
+                if(grid[bfsPos.y][bfsPos.x+1].reached == false){
+                    enqueue(&queue, bfsPos.x+1, bfsPos.y);
+                    //enqueue(&queue, grid[bfsPos.y][bfsPos.x+1].x, grid[bfsPos.y][bfsPos.x+1].y);
                     grid[bfsPos.y][bfsPos.x+1].reached = true;
+                    grid[bfsPos.y+1][bfsPos.x].direction = 3;
                 }
         
-                if(grid[bfsPos.y][bfsPos.x-1].reached == false && (bfsPos.x-1) != -1){
-                    enqueue(&queue, grid[bfsPos.y][bfsPos.x-1].x, grid[bfsPos.y][bfsPos.x-1].y);
+                if(grid[bfsPos.y][bfsPos.x-1].reached == false){
+                    enqueue(&queue, bfsPos.x-1, bfsPos.y);
+                    //enqueue(&queue, grid[bfsPos.y][bfsPos.x-1].x, grid[bfsPos.y][bfsPos.x-1].y);
                     grid[bfsPos.y][bfsPos.x-1].reached = true;
+                    grid[bfsPos.y+1][bfsPos.x].direction = 4;
                 }
             }
-            
             dequeue(&queue);
-        
-            peek(&queue, &bfsPos);
+            
+            isDone = peek(&queue, &bfsPos);
         }
+        
+        //if()
         
         if (IsKeyPressed(KEY_D) && circelPos.x != GirdSize - 1 && grid[circelPos.y][circelPos.x + 1].IsWall != true){
             circelPos.x++;

@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define MAX_SIZE 410
+#define MAX_SIZE 510
 
 typedef struct GridPos{
     int x;
@@ -11,6 +11,7 @@ typedef struct GridPos{
 typedef struct Tile{
     int x;
     int y;
+    int direction;
     float width;           
     float height;
     bool reached;
@@ -53,13 +54,14 @@ void dequeue(Queue* q)
     q->front++;
 }
 
-void peek(Queue* q, GridPos* g)
+bool peek(Queue* q, GridPos* g)
 {
     if (isEmpty(q)) {
         printf("Queue is empty\n");
-         // return some default value or handle
+        return true;    // return some default value or handle
                    // error differently
     }
     g->x = q->items[q->front + 1].x;
     g->y = q->items[q->front + 1].y;
+    return false;
 }
