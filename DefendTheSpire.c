@@ -6,16 +6,17 @@
 
 * pathfinding
 - [X]chouse algorithm(Breadth-first search)
-- [ ]implement it
+- [X]implement it
 
 * creeps
 - [X]creeps can spawn and move in the grid
-- [ ]creeps follow the pathfinding
+- [X]creeps follow the pathfinding
+- [X]creeps go around obstecels
 - [ ]more than one kind?
 
 * tiles
 - [X]wall tiels
-- [ ]Spire/goal tile
+- [X]Spire/goal tile
 
 * towers? (idk if i will get to this)
 - fill out later
@@ -64,34 +65,32 @@ int main(void)
     grid[bfsPos.y][bfsPos.x].reached = true;
     grid[bfsPos.y][bfsPos.x].direction = 0;
     
-    //grid[bfsPos.y][bfsPos.x]
-    
     bool isDone = false;
     
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        if(!isDone){
+        if(!isDone && IsKeyDown(KEY_SPACE)){
             if(bfsPos.x <= 19 && bfsPos.x >= 0 && bfsPos.y <= 19 && bfsPos.y >= 0){
                 
-                if(grid[bfsPos.y+1][bfsPos.x].reached == false){
+                if(grid[bfsPos.y+1][bfsPos.x].reached == false && grid[bfsPos.y+1][bfsPos.x].IsWall == false){
                     enqueue(&queue, bfsPos.x, bfsPos.y+1);
                     grid[bfsPos.y+1][bfsPos.x].reached = true;
                     grid[bfsPos.y+1][bfsPos.x].direction = 2;
                 }
         
-                if(grid[bfsPos.y-1][bfsPos.x].reached == false){
+                if(grid[bfsPos.y-1][bfsPos.x].reached == false && grid[bfsPos.y-1][bfsPos.x].IsWall == false){
                     enqueue(&queue, bfsPos.x, bfsPos.y-1);
                     grid[bfsPos.y-1][bfsPos.x].reached = true;
                     grid[bfsPos.y-1][bfsPos.x].direction = 1;
                 }
         
-                if(grid[bfsPos.y][bfsPos.x+1].reached == false){
+                if(grid[bfsPos.y][bfsPos.x+1].reached == false && grid[bfsPos.y][bfsPos.x+1].IsWall == false){
                     enqueue(&queue, bfsPos.x+1, bfsPos.y);
                     grid[bfsPos.y][bfsPos.x+1].reached = true;
                     grid[bfsPos.y][bfsPos.x+1].direction = 3;
                 }
         
-                if(grid[bfsPos.y][bfsPos.x-1].reached == false){
+                if(grid[bfsPos.y][bfsPos.x-1].reached == false && grid[bfsPos.y][bfsPos.x-1].IsWall == false){
                     enqueue(&queue, bfsPos.x-1, bfsPos.y);
                     grid[bfsPos.y][bfsPos.x-1].reached = true;
                     grid[bfsPos.y][bfsPos.x-1].direction = 4;
@@ -102,45 +101,27 @@ int main(void)
             isDone = peek(&queue, &bfsPos);
         }
         
-        if(isDone/* && IsKeyPressed(KEY_SPACE)*/){
-            if(grid[circelPos.y][circelPos.x].direction == 0){
-            
+        if(isDone){
+            if(grid[circelPos.y][circelPos.x].IsWall == true){
+                //do a reset if you need to avoid clotions
             }
-            else if(grid[circelPos.y][circelPos.x].direction == 4){
+            else if(grid[circelPos.y][circelPos.x].direction == 4 && grid[circelPos.y][circelPos.x+1].IsWall == false){
                 circelPos.x++;
                 circel.x = grid[circelPos.y][circelPos.x].x;
             }
-            else if(grid[circelPos.y][circelPos.x].direction == 3){
+            else if(grid[circelPos.y][circelPos.x].direction == 3 && grid[circelPos.y][circelPos.x-1].IsWall == false){
                 circelPos.x--;
                 circel.x = grid[circelPos.y][circelPos.x].x;
             }
-            else if(grid[circelPos.y][circelPos.x].direction == 2){
+            else if(grid[circelPos.y][circelPos.x].direction == 2 && grid[circelPos.y-1][circelPos.x].IsWall == false){
                 circelPos.y--;
                 circel.y = grid[circelPos.y][circelPos.x].y;
             }
-            else if(grid[circelPos.y][circelPos.x].direction == 1){
+            else if(grid[circelPos.y][circelPos.x].direction == 1 && grid[circelPos.y+1][circelPos.x].IsWall == false){
                 circelPos.y++;
                 circel.y = grid[circelPos.y][circelPos.x].y;
             }
-            printf("%d", grid[circelPos.y][circelPos.x].direction);
         }
-        
-        /*if (IsKeyPressed(KEY_D) && circelPos.x != GirdSize - 1 && grid[circelPos.y][circelPos.x + 1].IsWall != true){
-            circelPos.x++;
-            circel.x = grid[circelPos.y][circelPos.x].x;
-        }
-        else if (IsKeyPressed(KEY_A) && circelPos.x != 0 && grid[circelPos.y][circelPos.x - 1].IsWall != true){
-            circelPos.x--;
-            circel.x = grid[circelPos.y][circelPos.x].x;
-        }
-        else if (IsKeyPressed(KEY_W) && circelPos.y != 0 && grid[circelPos.y - 1][circelPos.x].IsWall != true){
-            circelPos.y--;
-            circel.y = grid[circelPos.y][circelPos.x].y;
-        }
-        else if (IsKeyPressed(KEY_S) && circelPos.y != GirdSize - 1 && grid[circelPos.y + 1][circelPos.x].IsWall != true){
-            circelPos.y++;
-            circel.y = grid[circelPos.y][circelPos.x].y;
-        }*/
         
         Vector2 mouse = GetMousePosition();
         for(int i = 0; i < GirdSize; i++){
@@ -167,6 +148,10 @@ int main(void)
                 }
             }
             DrawCircle(circel.x + 15, circel.y + 15, 10, RED);
+            
+            DrawText("Hold [Space] to generate pathfinding", 10, 700, 30, BLACK);
+            DrawText("Press [Left mouse button] to place a wall", 10, 740, 30, BLACK);
+            DrawText("Press [Right mouse button] to remove a wall", 10, 780, 30, BLACK);
 
         EndDrawing();
     }
