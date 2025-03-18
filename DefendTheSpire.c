@@ -75,30 +75,26 @@ int main(void)
                 
                 if(grid[bfsPos.y+1][bfsPos.x].reached == false){
                     enqueue(&queue, bfsPos.x, bfsPos.y+1);
-                    //enqueue(&queue, grid[bfsPos.y+1][bfsPos.x].x, grid[bfsPos.y+1][bfsPos.x].y);
                     grid[bfsPos.y+1][bfsPos.x].reached = true;
                     grid[bfsPos.y+1][bfsPos.x].direction = 2;
                 }
         
                 if(grid[bfsPos.y-1][bfsPos.x].reached == false){
                     enqueue(&queue, bfsPos.x, bfsPos.y-1);
-                    //enqueue(&queue, grid[bfsPos.y-1][bfsPos.x].x, grid[bfsPos.y-1][bfsPos.x].y);
                     grid[bfsPos.y-1][bfsPos.x].reached = true;
-                    grid[bfsPos.y+1][bfsPos.x].direction = 1;
+                    grid[bfsPos.y-1][bfsPos.x].direction = 1;
                 }
         
                 if(grid[bfsPos.y][bfsPos.x+1].reached == false){
                     enqueue(&queue, bfsPos.x+1, bfsPos.y);
-                    //enqueue(&queue, grid[bfsPos.y][bfsPos.x+1].x, grid[bfsPos.y][bfsPos.x+1].y);
                     grid[bfsPos.y][bfsPos.x+1].reached = true;
-                    grid[bfsPos.y+1][bfsPos.x].direction = 3;
+                    grid[bfsPos.y][bfsPos.x+1].direction = 3;
                 }
         
                 if(grid[bfsPos.y][bfsPos.x-1].reached == false){
                     enqueue(&queue, bfsPos.x-1, bfsPos.y);
-                    //enqueue(&queue, grid[bfsPos.y][bfsPos.x-1].x, grid[bfsPos.y][bfsPos.x-1].y);
                     grid[bfsPos.y][bfsPos.x-1].reached = true;
-                    grid[bfsPos.y+1][bfsPos.x].direction = 4;
+                    grid[bfsPos.y][bfsPos.x-1].direction = 4;
                 }
             }
             dequeue(&queue);
@@ -106,9 +102,30 @@ int main(void)
             isDone = peek(&queue, &bfsPos);
         }
         
-        //if()
+        if(isDone/* && IsKeyPressed(KEY_SPACE)*/){
+            if(grid[circelPos.y][circelPos.x].direction == 0){
+            
+            }
+            else if(grid[circelPos.y][circelPos.x].direction == 4){
+                circelPos.x++;
+                circel.x = grid[circelPos.y][circelPos.x].x;
+            }
+            else if(grid[circelPos.y][circelPos.x].direction == 3){
+                circelPos.x--;
+                circel.x = grid[circelPos.y][circelPos.x].x;
+            }
+            else if(grid[circelPos.y][circelPos.x].direction == 2){
+                circelPos.y--;
+                circel.y = grid[circelPos.y][circelPos.x].y;
+            }
+            else if(grid[circelPos.y][circelPos.x].direction == 1){
+                circelPos.y++;
+                circel.y = grid[circelPos.y][circelPos.x].y;
+            }
+            printf("%d", grid[circelPos.y][circelPos.x].direction);
+        }
         
-        if (IsKeyPressed(KEY_D) && circelPos.x != GirdSize - 1 && grid[circelPos.y][circelPos.x + 1].IsWall != true){
+        /*if (IsKeyPressed(KEY_D) && circelPos.x != GirdSize - 1 && grid[circelPos.y][circelPos.x + 1].IsWall != true){
             circelPos.x++;
             circel.x = grid[circelPos.y][circelPos.x].x;
         }
@@ -123,7 +140,7 @@ int main(void)
         else if (IsKeyPressed(KEY_S) && circelPos.y != GirdSize - 1 && grid[circelPos.y + 1][circelPos.x].IsWall != true){
             circelPos.y++;
             circel.y = grid[circelPos.y][circelPos.x].y;
-        }
+        }*/
         
         Vector2 mouse = GetMousePosition();
         for(int i = 0; i < GirdSize; i++){
